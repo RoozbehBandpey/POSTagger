@@ -1,6 +1,6 @@
 from __future__ import division
 import numpy as numpy
-from corpus import Corpus
+from datahelper import DataHelper
 from evaluation import *
 import cPickle
 import gzip
@@ -92,7 +92,7 @@ class multi_class_perceptron:
     def train(self, train_file, iteration):
         print("________________________________________________________________________________________________tarin starts")
         model = multi_class_perceptron()
-        c = Corpus()
+        c = DataHelper()
 
         instances = []
         sentence_count = 0
@@ -126,7 +126,7 @@ class multi_class_perceptron:
                     model.update(feature, pos_tag, predicted_tag)
             end = time.time()
             print 'Iteration'+'\t'+str(iter_round+1)+'\t'+'done.', " runs at:", end - start, "seconds"
-            model_file = 'Output_Files\\model_'+str(iter_round+1)+'.dump'
+            model_file = 'dumps\\model_'+str(iter_round+1)+'.dump'
             model.save(model_file)
         print("________________________________________________________________________________________________tarin ends")
 
@@ -134,12 +134,12 @@ class multi_class_perceptron:
     def tagger(self, filename, iteration):
         print "________________________________________________________________________________________________Perceptron tagger starts"
         for iter_round in range(iteration):
-            model_file = 'Output_Files\\model_' + str(iter_round + 1) + '.dump'
+            model_file = 'dumps\\model_' + str(iter_round + 1) + '.dump'
             print 'Reading from file'+'\t'+model_file.split('\\')[1]
             model = multi_class_perceptron(model_file)
-            c = Corpus()
+            c = DataHelper()
 
-            output = open('Output_Files\\dev-predicted.col', 'w')
+            output = open('dumps\\dev-predicted.col', 'w')
             for sentence in c.read_sentence(filename):
                 for token in sentence:
                     feature = token.feature_extracter(model.return_features)
@@ -151,13 +151,13 @@ class multi_class_perceptron:
                 output.write('\n')
             output.close()
 
-            Cgold = Corpus("Input_Files\\test.col")
+            Cgold = DataHelper("dataset\\test.col")
             GoldWordTagList = Cgold.Tokenize(Cgold)
 
-            Cpred = Corpus("Output_Files\\dev-predicted.col")
+            Cpred = DataHelper("dumps\\dev-predicted.col")
             PredWordTagList = Cpred.Tokenize(Cpred)
 
-            Ctag = Corpus("Input_Files\\test.col")
+            Ctag = DataHelper("dataset\\test.col")
             TagSet = Ctag.tagSet(Ctag)
 
             eval = Evaluation()
@@ -177,16 +177,16 @@ class multi_class_perceptron:
 
     def viterbi_tagger(self, test_file):
         print "________________________________________________________________________________________________viterbi_tagger starts"
-        c_3 = Corpus("Input_Files\\train.col")
+        c_3 = DataHelper("dataset\\train.col")
 
-        stream_emission_matrix = gzip.open("Output_Files\\emission_matrix.dump", 'rb')
+        stream_emission_matrix = gzip.open("dumps\\emission_matrix.dump", 'rb')
         emission_matrix = cPickle.load(stream_emission_matrix)
         stream_emission_matrix.close()
 
 
 
 
-        stream_transition_matrix = gzip.open("Output_Files\\transition_matrix.dump", 'rb')
+        stream_transition_matrix = gzip.open("dumps\\transition_matrix.dump", 'rb')
         transition_matrix = cPickle.load(stream_transition_matrix)
         stream_transition_matrix.close()
 
@@ -198,7 +198,7 @@ class multi_class_perceptron:
         sentence_count = 0
         word_count = 0
 
-        output = open('Output_Files\\dev-predicted-viterbi.col', 'w')
+        output = open('dumps\\dev-predicted-viterbi.col', 'w')
         for sentence in c_3.read_sentence(test_file):
             observation = sentence.word_list()
             sentence_count += 1
@@ -226,7 +226,7 @@ class multi_class_perceptron:
 
         output.close()
 
-        Ctag = Corpus("Input_Files\\test.col")
+        Ctag = DataHelper("dataset\\test.col")
         TagSet = Ctag.tagSet(Ctag)
 
 
@@ -238,10 +238,10 @@ class multi_class_perceptron:
         print(table.table)
         print "________________________________________________________________________________________________viterbi_tagger ends"
 
-        Cgold = Corpus("Input_Files\\test.col")
+        Cgold = DataHelper("dataset\\test.col")
         GoldWordTagList = Cgold.Tokenize(Cgold)
 
-        Cpred = Corpus("Output_Files\\dev-predicted-viterbi.col")
+        Cpred = DataHelper("dumps\\dev-predicted-viterbi.col")
         PredWordTagList = Cpred.Tokenize(Cpred)
 
 
@@ -280,8 +280,8 @@ class multi_class_perceptron:
         # '100', 'million', 'in', 'punitive', 'damages', '.']
         #states = ['VB', 'RP', '$', 'NN', 'FW', 'RBR', 'DT', 'CD', 'TO', 'RB', 'IN', 'VBZ', 'JJ', '.', 'NNS', ',', 'NNP']
 #
-        #c_1 = Corpus("Input_Files\\train.col")
-        #c_2 = Corpus("Input_Files\\train.col")
+        #c_1 = Corpus("dataset\\train.col")
+        #c_2 = Corpus("dataset\\train.col")
 #
         #emission_matrix = c_1.dictionary_maker(c_1)
         #transition_matrix = c_2.bigram_preprocess(c_2)
