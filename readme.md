@@ -1,3 +1,5 @@
+#Python Implementation of Avaraged Perceptron, Passive-Aggressive Perceptron and discriminativly training a HMM with perceptron 
+
 In this work, first a perceptron for classification task was impleneted, with parameter averaging and Passive-Aggressive algorithm during training;
 
 Later the model was turned into a sequential, taking advantage of the sequential dependence of neighboring tags. We used hill climbing method to select the feature
