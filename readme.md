@@ -1,4 +1,4 @@
-#Python Implementation of Avaraged Perceptron, Passive-Aggressive Perceptron and discriminativly training a HMM with perceptron 
+# Python Implementation of Avaraged Perceptron, Passive-Aggressive Perceptron and discriminativly training a HMM with perceptron 
 
 In this work, first a perceptron for classification task was impleneted, with parameter averaging and Passive-Aggressive algorithm during training;
 
