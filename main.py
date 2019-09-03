@@ -8,12 +8,12 @@ p = multi_class_perceptron()
 v = multi_class_perceptron()
 
 # Prompt the user to enter the number of iteration for perceptron learning
-iterarion = input('Enter number of iterarion(s): ')
-
+# iterarion = input('Enter number of iterarion(s): ')
+iteration = 10
 #The main training procedure for perceptron classifier
-p.train("Input_Files\\train.col", iterarion)
+p.train("Input_Files\\train.col", iteration)
 #Tagging the corpus after each iteration, base on models that have been dumped in memory from training fuction
-t.tagger("Input_Files\\test.col", iterarion)
+# t.tagger("Input_Files\\test.col", iteration)
 
 # start = time.time()5
 # #Tagging the corpus based on viterbi perceptron
